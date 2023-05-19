@@ -51,8 +51,9 @@ public class AptController {
         return new ResponseEntity<List<SidoGugunCodeDto>>(houseService.getGugunInSido(sido), HttpStatus.OK);
     }
 
-    @GetMapping( "/house-list")
-    public ResponseEntity<List<HouseNameAvgPriceDto>> houseList(@RequestParam(required = false) String dong) throws Exception {
+    @GetMapping("/house-list")
+    public ResponseEntity<List<HouseNameAvgPriceDto>> houseList(@RequestParam(required = false) String dong)
+            throws Exception {
         log.info("welcome controller");
         List<HouseNameAvgPriceDto> aptNameAndAvgPrice = houseService.getAptNameAndAvgPrice(dong);
         log.info("size = {}", aptNameAndAvgPrice.size());
@@ -74,7 +75,7 @@ public class AptController {
     }
 
     @GetMapping("/")
-    @ApiOperation(notes="서버 연결 상태를 체크합니다.", value = "hi")
+    @ApiOperation(notes = "서버 연결 상태를 체크합니다.", value = "hi")
     public ResponseEntity<?> home() {
         return ResponseEntity.ok().body("hi");
     }
@@ -102,7 +103,7 @@ public class AptController {
 
     @GetMapping("/detailApt/{aptCode}")
     @ApiOperation(notes = "해당 아파트에서 가장 가까운 선별진료소와 해당 동의 평당 시세를 보여줍니다.", value = "Apt Detail")
-    public AptDealAvgDetailDto showDetail(@PathVariable String aptCode){
+    public AptDealAvgDetailDto showDetail(@PathVariable String aptCode) {
         return houseService.showDetail(aptCode);
     }
 
@@ -120,11 +121,10 @@ public class AptController {
 
     @GetMapping("/detailReview")
     @ApiOperation(notes = "해당 아파트의 리뷰를 보여줍니다.", value = "Apt Review")
-    public List<ReviewDto> showReview(@RequestParam("aptCode") String aptCode){
+    public List<ReviewDto> showReview(@RequestParam("aptCode") String aptCode) {
         List<ReviewDto> list = reviewService.showReview(aptCode);
         return list;
     }
-
 
 
 }
