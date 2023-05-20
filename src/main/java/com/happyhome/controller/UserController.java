@@ -1,8 +1,8 @@
 package com.happyhome.controller;
 
-import com.happyhome.model.SecurityUser;
-import com.happyhome.model.User;
-import com.happyhome.model.UserUpdateDto;
+import com.happyhome.model.user.SecurityUser;
+import com.happyhome.model.user.User;
+import com.happyhome.model.user.dto.UserUpdateDto;
 import com.happyhome.service.UserService;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

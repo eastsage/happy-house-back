@@ -1,8 +1,8 @@
 package com.happyhome.service;
 
 import com.happyhome.mapper.UserMapper;
-import com.happyhome.model.SecurityUser;
-import com.happyhome.model.User;
+import com.happyhome.model.user.SecurityUser;
+import com.happyhome.model.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;

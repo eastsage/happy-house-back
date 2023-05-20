@@ -1,5 +1,6 @@
-package com.happyhome.model;
+package com.happyhome.model.user;
 
+import com.happyhome.model.user.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.happyhome.model;
+package com.happyhome.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

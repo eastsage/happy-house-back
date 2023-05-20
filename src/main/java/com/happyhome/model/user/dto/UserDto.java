@@ -1,15 +1,13 @@
-package com.happyhome.model;
+package com.happyhome.model.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class UserUpdateDto {
+public class UserDto {
     private String id;
-    private String name;
-    private String address;
-    private String number;
+    private String pass;
 }

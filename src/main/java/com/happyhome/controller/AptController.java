@@ -5,7 +5,7 @@ import com.happyhome.model.apt.dto.AptDealAvgDetailDto;
 import com.happyhome.model.apt.dto.AptDealAvgDto;
 import com.happyhome.model.apt.dto.AptHouseDealGraphDto;
 import com.happyhome.model.apt.dto.HouseInfoDto;
-import com.happyhome.model.apt.dto.HouseNameAvgPriceDto;
+import com.happyhome.model.apt.dto.HouseSimpleInfoDto;
 import com.happyhome.model.apt.dto.SidoGugunCodeDto;
 import com.happyhome.service.HouseService;
 import com.happyhome.service.ReviewService;
@@ -52,16 +52,16 @@ public class AptController {
     }
 
     @GetMapping("/house-list")
-    public ResponseEntity<List<HouseNameAvgPriceDto>> houseList(@RequestParam(required = false) String dong)
+    public ResponseEntity<List<HouseSimpleInfoDto>> houseList(@RequestParam(required = false) String dong)
             throws Exception {
         log.info("welcome controller");
-        List<HouseNameAvgPriceDto> aptNameAndAvgPrice = houseService.getAptNameAndAvgPrice(dong);
-        log.info("size = {}", aptNameAndAvgPrice.size());
-        for (HouseNameAvgPriceDto dto : aptNameAndAvgPrice) {
-            log.info("aptName = {}", dto.getAptName());
-            log.info("avgPrice = {}", dto.getAvgPrice());
+        List<HouseSimpleInfoDto> houseSimpleInfoDatas = houseService.getAptNameAndAvgPrice(dong);
+        log.info("size = {}", houseSimpleInfoDatas.size());
+        for (HouseSimpleInfoDto data : houseSimpleInfoDatas) {
+            log.info("aptName = {}", data.getAptName());
+            log.info("avgPrice = {}", data.getAvgPrice());
         }
-        return ResponseEntity.ok().body(aptNameAndAvgPrice);
+        return ResponseEntity.ok().body(houseSimpleInfoDatas);
     }
 
     @GetMapping("/dong")

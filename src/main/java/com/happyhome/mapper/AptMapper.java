@@ -4,7 +4,7 @@ import com.happyhome.model.apt.dto.AptDealAvgDetailDto;
 import com.happyhome.model.apt.dto.AptDealAvgDto;
 import com.happyhome.model.apt.dto.AptHouseDealGraphDto;
 import com.happyhome.model.apt.dto.HouseInfoDto;
-import com.happyhome.model.apt.dto.HouseNameAvgPriceDto;
+import com.happyhome.model.apt.dto.HouseSimpleInfoDto;
 import com.happyhome.model.apt.dto.SidoGugunCodeDto;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -60,9 +60,9 @@ public interface AptMapper {
     @Select("select aptName from houseinfo where houseinfo.dongCode = #{dong}")
     List<HouseInfoDto> getAptByDongCode(String dong) throws Exception;
 
-    @Select("select hi.aptName, round(avg(hd.dealAmount),2) avgPrice "
+    @Select("select hi.aptName, round(avg(hd.dealAmount),2) avgPrice, lat, lng "
             + "from houseinfo hi, housedeal hd "
             + "where dongcode = #{dongCode} and hi.aptCode = hd.aptCode "
             + "group by hd.aptCode limit 6")
-    List<HouseNameAvgPriceDto> getAptNameAndAvgPrice(String dongCode) throws Exception;
+    List<HouseSimpleInfoDto> getAptNameAndAvgPrice(String dongCode) throws Exception;
 }

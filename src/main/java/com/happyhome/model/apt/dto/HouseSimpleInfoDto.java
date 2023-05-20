@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HouseNameAvgPriceDto {
+public class HouseSimpleInfoDto {
     private String aptName;
     private String avgPrice;
+    private String lat;
+    private String lng;
 }

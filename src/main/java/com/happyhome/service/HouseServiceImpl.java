@@ -7,7 +7,7 @@ import com.happyhome.model.apt.dto.AptDealAvgDetailDto;
 import com.happyhome.model.apt.dto.AptDealAvgDto;
 import com.happyhome.model.apt.dto.AptHouseDealGraphDto;
 import com.happyhome.model.apt.dto.HouseInfoDto;
-import com.happyhome.model.apt.dto.HouseNameAvgPriceDto;
+import com.happyhome.model.apt.dto.HouseSimpleInfoDto;
 import com.happyhome.model.apt.dto.SidoGugunCodeDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public List<HouseNameAvgPriceDto> getAptNameAndAvgPrice(String dongCode) throws Exception {
+    public List<HouseSimpleInfoDto> getAptNameAndAvgPrice(String dongCode) throws Exception {
         return aptmapper.getAptNameAndAvgPrice(dongCode);
     }
 
