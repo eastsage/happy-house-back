@@ -60,7 +60,7 @@ public interface AptMapper {
     @Select("select aptName from houseinfo where houseinfo.dongCode = #{dong}")
     List<HouseInfoDto> getAptByDongCode(String dong) throws Exception;
 
-    @Select("select hi.aptName, round(avg(hd.dealAmount),2) avgPrice, lat, lng "
+    @Select("select hi.aptCode, hi.aptName, round(avg(hd.dealAmount),2) avgPrice, lat, lng "
             + "from houseinfo hi, housedeal hd "
             + "where dongcode = #{dongCode} and hi.aptCode = hd.aptCode "
             + "group by hd.aptCode limit 6")

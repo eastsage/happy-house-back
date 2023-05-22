@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HouseSimpleInfoDto {
+    private String aptCode;
     private String aptName;
     private String avgPrice;
     private String lat;
