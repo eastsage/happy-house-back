@@ -107,7 +107,7 @@ public class AptController {
         return houseService.showDetail(aptCode);
     }
 
-    @GetMapping("/graph/{aptCode}")
+    @GetMapping("/detailApt/graph/{aptCode}")
     public ResponseEntity graph(@PathVariable String aptCode) {
 
         List<AptHouseDealGraphDto> graphDataList = houseService.getGraphData(aptCode);

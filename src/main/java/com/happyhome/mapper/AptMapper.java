@@ -13,7 +13,8 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface AptMapper {
-    @Select("select hi.aptcode, aptName, address, round(avg(dealAmount/area),2) price from houseinfo hi left join sigungudongcode dc on hi.dongcode = dc.dongcode left join housedeal hd on hi.aptcode = hd.aptcode where address like #{address} group by hi.aptcode")
+    @Select("select hi.aptcode, hi.aptName, address, round(avg(dealAmount/area),2) price "
+            + "from houseinfo hi left join sigungudongcode dc on hi.dongcode = dc.dongcode left join housedeal hd on hi.aptcode = hd.aptcode where address like #{address} group by hi.aptcode")
     @ResultType(AptDealAvgDto.class)
     List<AptDealAvgDto> showDealByRegion(String address);
 

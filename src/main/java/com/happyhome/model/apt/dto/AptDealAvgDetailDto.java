@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AptDealAvgDetailDto {
     private long aptCode;
-    private String apartmentName;
+    private String aptName;
     private String address;
     private String name;
     private double price;
