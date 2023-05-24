@@ -35,8 +35,6 @@ public class AuthenticationConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        AuthenticationManager authenticationManager = authenticationManager(
-//                http.getSharedObject(AuthenticationConfiguration.class));
         JwtAuthenticationFilter jwtAuthenticationFilter = jwtAuthenticationFilter(authenticationManager());
         JwtAuthorizationFilter jwtAuthorizationFilter = jwtAuthorizationFilter(authenticationManager(), userService);
 
@@ -49,6 +47,7 @@ public class AuthenticationConfig {
                 .httpBasic().disable()
                 .addFilterAt(jwtAuthenticationFilter, JwtAuthenticationFilter.class)
                 .addFilterAt(jwtAuthorizationFilter, JwtAuthorizationFilter.class)
+
                 .authorizeRequests()
 //                .antMatchers("/api/v1/user/**")
 //                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
@@ -61,11 +60,6 @@ public class AuthenticationConfig {
                 .build();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-//            throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(AuthenticationManager authenticationManager) {

@@ -61,7 +61,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 결론은 인증 프로바이더에게 알려줄 필요가 없음.
         Authentication authentication =
                 authenticationManager.authenticate(authenticationToken);
-        System.out.println(authentication.getPrincipal());
 //        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 //        System.out.println("Authentication : " + principalDetails.getUser().getUsername());
         return authentication;
