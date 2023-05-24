@@ -49,8 +49,8 @@ public class AuthenticationConfig {
                 .addFilterAt(jwtAuthorizationFilter, JwtAuthorizationFilter.class)
 
                 .authorizeRequests()
-//                .antMatchers("/api/v1/user/**")
-//                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/vue/user/**")
+                .access("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
 //                .antMatchers("/api/v1/manager/**")
 //                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 //                .antMatchers("/api/v1/admin/**")
