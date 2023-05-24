@@ -36,12 +36,16 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public User findByUsername(String username){
+        return userMapper.findByUsername(username);
+    }
+
     @Override
-    public SecurityUser loadUserByUsername(String id) throws UsernameNotFoundException {
-        if (id == null) {
+    public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username == null) {
             throw new IllegalArgumentException(ERROR_NO_ACCOUNT);
         }
-        User user = userMapper.findByUserId(id);
+        User user = userMapper.findByUsername(username);
         log.info("{}", user);
         if (user == null) {
             throw new IllegalArgumentException(ERROR_NO_USER);

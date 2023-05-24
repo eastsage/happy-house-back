@@ -1,24 +1,25 @@
 package com.happyhome.configuration;
 
-import com.happyhome.filter.CustomAuthenticationFilter;
-import com.happyhome.handler.CustomAuthenticationFailureHandler;
-import com.happyhome.handler.CustomAuthenticationSuccessHandler;
+import com.happyhome.configuration.jwt.JwtAuthenticationFilter;
+import com.happyhome.configuration.jwt.JwtAuthorizationFilter;
 import com.happyhome.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -28,62 +29,71 @@ public class AuthenticationConfig {
 
     private final UserService userService;
 
+    private final CorsConfig corsConfig;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        AuthenticationManager authenticationManager = authenticationManagerBean(
-                httpSecurity.getSharedObject(AuthenticationConfiguration.class));
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        AuthenticationManager authenticationManager = authenticationManager(
+//                http.getSharedObject(AuthenticationConfiguration.class));
+        JwtAuthenticationFilter jwtAuthenticationFilter = jwtAuthenticationFilter(authenticationManager());
+        JwtAuthorizationFilter jwtAuthorizationFilter = jwtAuthorizationFilter(authenticationManager(), userService);
 
-        CustomAuthenticationFilter customAuthenticationFilter = customAuthenticationFilter(authenticationManager);
-        httpSecurity.addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return httpSecurity
-                .formLogin().disable()
+        return http
+                .addFilter(corsConfig.corsFilter())
                 .csrf().disable()
-                .authorizeRequests()
-                .anyRequest().permitAll()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .logout()
-                .logoutSuccessUrl("/user/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .formLogin().disable()
+                .httpBasic().disable()
+                .addFilterAt(jwtAuthenticationFilter, JwtAuthenticationFilter.class)
+                .addFilterAt(jwtAuthorizationFilter, JwtAuthorizationFilter.class)
+                .authorizeRequests()
+//                .antMatchers("/api/v1/user/**")
+//                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+//                .antMatchers("/api/v1/manager/**")
+//                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+//                .antMatchers("/api/v1/admin/**")
+//                .access("hasRole('ROLE_ADMIN')")
+                .anyRequest().permitAll()
                 .and()
                 .build();
     }
 
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+//            throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
+
     @Bean
-    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public JwtAuthenticationFilter jwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
+
+        SecurityContextRepository contextRepository = new HttpSessionSecurityContextRepository();
+        jwtAuthenticationFilter.setSecurityContextRepository(contextRepository);
+        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
+
+        return jwtAuthenticationFilter;
     }
 
     @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(AuthenticationManager authenticationManager)
-            throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(
-                new AntPathRequestMatcher("/login", HttpMethod.POST.name())
-        );
-        filter.setAuthenticationManager(authenticationManager);
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler());
+    public JwtAuthorizationFilter jwtAuthorizationFilter(AuthenticationManager authenticationManager,
+                                                         UserService userService) {
+        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(authenticationManager, userService);
 
-        return filter;
+        SecurityContextRepository contextRepository = new HttpSessionSecurityContextRepository();
+        jwtAuthorizationFilter.setSecurityContextRepository(contextRepository);
+
+        return jwtAuthorizationFilter;
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
     }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
-
-
 }

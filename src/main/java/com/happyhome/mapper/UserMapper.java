@@ -13,12 +13,15 @@ public interface UserMapper {
     @Select("select * from user where id = #{id}")
     User findByUserId(String userid);
 
-    @Insert("insert into user(id, pass, name, address, number, role) values (#{id}, #{pass}, #{name} , #{address}, #{number}, #{role})")
+    @Insert("insert into user(username, password, roles) values (#{username}, #{password}, #{roles})")
     int saveUser(User user);
 
-    @Delete("delete from user where id = #{id}")
+    @Delete("delete from user where username = #{username}")
     int deleteUser(User user);
 
-    @Update("update user set id = #{id}, name = #{name}, address = #{address}, number = #{number} where no = ${no}")
+    @Update("update user set username = #{username} where username = #{username}")
     int UpdateUser(User user);
+
+    @Select("select * from user where username = #{username}")
+    User findByUsername(String username);
 }
