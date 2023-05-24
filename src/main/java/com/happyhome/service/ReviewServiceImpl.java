@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReviewService {
+public class ReviewServiceImpl {
 
     @Autowired
-    ReviewMapper rmapper;
+    ReviewMapper reviewMapper;
     public List<ReviewDto> showReview(String aptCode) {
-        return rmapper.showReview(aptCode);
+        return reviewMapper.showReview(aptCode);
+    }
+
+    public List<ReviewDto> getReview(String aptCode){
+        return reviewMapper.getReview(aptCode);
     }
 }

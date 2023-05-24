@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ReviewDto {
-    String id;
-    String aptCode;
-    String apartmentName;
+    String user_id;
     String title;
     String content;
     String stars;

@@ -8,7 +8,7 @@ import com.happyhome.model.apt.dto.HouseInfoDto;
 import com.happyhome.model.apt.dto.HouseSimpleInfoDto;
 import com.happyhome.model.apt.dto.SidoGugunCodeDto;
 import com.happyhome.service.HouseService;
-import com.happyhome.service.ReviewService;
+import com.happyhome.service.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,7 +36,7 @@ public class AptController {
     HouseService houseService;
 
     @Autowired
-    ReviewService reviewService;
+    ReviewServiceImpl reviewService;
 
     @ApiOperation(value = "시도 정보", notes = "전국의 시도를 반환한다.", response = List.class)
     @GetMapping("/sido")
@@ -124,6 +124,18 @@ public class AptController {
     public List<ReviewDto> showReview(@RequestParam("aptCode") String aptCode) {
         List<ReviewDto> list = reviewService.showReview(aptCode);
         return list;
+    }
+
+    @GetMapping("/detailApt/review/{aptCode}")
+    public ResponseEntity review(@PathVariable String aptCode) {
+
+        List<ReviewDto> reviewList = reviewService.getReview(aptCode);
+
+        if (reviewList == null || reviewList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(reviewList);
+        }
     }
 
 
