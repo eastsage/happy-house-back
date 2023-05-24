@@ -1,0 +1,23 @@
+### Login
+POST localhost:9999/vue/login
+Content-Type: application/json
+
+{
+  "username": "aaa",
+  "password": "1234"
+}
+
+### Join
+POST localhost:9999/vue/user/join
+Content-Type: application/json
+
+{
+  "username": "aaa",
+  "password": "1234",
+  "roles": "ROLE_CUSTOMER"
+}
+
+### Info
+GET http://localhost:9999/vue/user/info
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYWEiLCJyb2xlcyI6IlJPTEVfQ1VTVE9NRVIiLCJleHAiOjE2ODU3OTM3MDIsInVzZXJuYW1lIjoiYWFhIn0.EpWQnswLxzyYu1FpOZdIJm4le2bmqall6kEbcZHc8bUz96yM6QPpzL6qsOOKMhrBc58wKpqH4G36-xsdMtGdHA
