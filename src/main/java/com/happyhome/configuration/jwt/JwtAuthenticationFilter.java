@@ -3,6 +3,7 @@ package com.happyhome.configuration.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import com.happyhome.model.user.SecurityUser;
 import com.happyhome.model.user.dto.LoginRequestDto;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -81,7 +84,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("username", securityUser.getUser().getUsername())
                 .withClaim("roles", securityUser.getUser().getRoles())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+//        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        JsonObject token = new JsonObject();
+        token.addProperty("access-token", JwtProperties.TOKEN_PREFIX + jwtToken);
+        token.addProperty("message", "success");
+        log.info("access-token = {}", token);
+        response.getWriter().write(token.toString());
     }
 
 }

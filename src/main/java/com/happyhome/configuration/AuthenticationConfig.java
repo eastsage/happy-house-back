@@ -33,6 +33,7 @@ public class AuthenticationConfig {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = jwtAuthenticationFilter(authenticationManager());
@@ -49,12 +50,6 @@ public class AuthenticationConfig {
                 .addFilterAt(jwtAuthorizationFilter, JwtAuthorizationFilter.class)
 
                 .authorizeRequests()
-                .antMatchers("/vue/user/**")
-                .access("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
-//                .antMatchers("/api/v1/manager/**")
-//                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-//                .antMatchers("/api/v1/admin/**")
-//                .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
                 .and()
                 .build();
@@ -90,4 +85,6 @@ public class AuthenticationConfig {
         provider.setPasswordEncoder(passwordEncoder);
         return new ProviderManager(provider);
     }
+
+
 }
