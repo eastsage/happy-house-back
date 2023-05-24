@@ -1,5 +1,6 @@
 package com.happyhome.mapper;
 
+import com.happyhome.model.ReviewDto;
 import com.happyhome.model.apt.dto.AptDealAvgDetailDto;
 import com.happyhome.model.apt.dto.AptDealAvgDto;
 import com.happyhome.model.apt.dto.AptHouseDealGraphDto;
@@ -76,4 +77,6 @@ public interface AptMapper {
             + "where dongcode = #{dongCode} and hi.aptCode = hd.aptCode "
             + "group by hd.aptCode limit 6")
     List<HouseSimpleInfoDto> getAptNameAndAvgPrice(String dongCode) throws Exception;
+
+
 }

@@ -25,6 +25,8 @@ public interface ReviewMapper {
             + "#{stars}, #{likes}, #{hates}, #{created_date})")
     int addReview(Review review);
 
-
+    @Select("select user_id, title, content, stars, likes, hates, created_date from review "
+            + " where aptCode = #{aptCode} ")
+    List<ReviewDto> getReview(String aptCode);
 
 }
