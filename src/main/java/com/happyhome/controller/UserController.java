@@ -32,18 +32,20 @@ public class UserController {
 
 
     @PostMapping("join")
-    public ResponseEntity join(@RequestBody User user) {
+    public ResponseEntity<Map<String, String>> join(@RequestBody User user) {
         log.info("join user = {}", user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int status = userService.saveUser(user);
+        Map<String, String> response = new HashMap<>();
         if (status < 1) {
-            return ResponseEntity.badRequest().body("회원가입 실패");
+            response.put("result", "join fail");
+            return ResponseEntity.badRequest().body(response);
         }
-        return ResponseEntity.ok().body("회원가입 성공!");
+        response.put("result", "join success!");
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("info/{username}")
-    @Secured("ROLE_CUSTOMER")
     public ResponseEntity<Map<String, Object>> info(Authentication authentication, @PathVariable String username) {
         User user = userService.findByUsername(username);
         user.setPassword("HIDDEN");
